@@ -1,18 +1,21 @@
 #include <doctest/doctest.h>
-#include <greeter.h>
+#include <greeter/greeter.h>
+#include <greeter/version.h>
 
-#if defined(_WIN32) || defined(WIN32)
-// apparently this is required to compile in MSVC++
-#  include <sstream>
-#endif
+#include <string>
 
 TEST_CASE("Greeter") {
   using namespace greeter;
 
-  Greeter greeter("World");
+  Greeter greeter("Tests");
 
-  CHECK(greeter.greet(LanguageCode::EN) == "Hello, World!");
-  CHECK(greeter.greet(LanguageCode::DE) == "Hallo World!");
-  CHECK(greeter.greet(LanguageCode::ES) == "¡Hola World!");
-  CHECK(greeter.greet(LanguageCode::FR) == "Bonjour World!");
+  CHECK(greeter.greet(LanguageCode::EN) == "Hello, Tests!");
+  CHECK(greeter.greet(LanguageCode::DE) == "Hallo Tests!");
+  CHECK(greeter.greet(LanguageCode::ES) == "¡Hola Tests!");
+  CHECK(greeter.greet(LanguageCode::FR) == "Bonjour Tests!");
+}
+
+TEST_CASE("Greeter version") {
+  static_assert(std::string_view(GREETER_VERSION) == std::string_view("1.0"));
+  CHECK(std::string(GREETER_VERSION) == std::string("1.0"));
 }
