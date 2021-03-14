@@ -15,11 +15,8 @@ include(../cmake/tools.cmake)
 
 include(../cmake/CPM.cmake)
 
-CPMAddPackage(
-  NAME doctest
-  GITHUB_REPOSITORY onqtam/doctest
-  GIT_TAG 2.3.7
-)
+CPMAddPackage("gh:onqtam/doctest#2.4.5")
+CPMAddPackage("gh:TheLartians/Format.cmake@1.7.0")
 
 if(TEST_INSTALLED_VERSION)
   find_package(Greeter REQUIRED)
@@ -27,26 +24,17 @@ else()
   CPMAddPackage(NAME Greeter SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/..)
 endif()
 
-CPMAddPackage(
-  NAME Format.cmake
-  GITHUB_REPOSITORY TheLartians/Format.cmake
-  VERSION 1.6
-  OPTIONS # enable cmake formatting
-          "FORMAT_CHECK_CMAKE ON"
-)
-
 # ---- Create binary ----
 
 file(GLOB sources CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/source/*.cpp)
 add_executable(GreeterTests ${sources})
-target_link_libraries(GreeterTests doctest Greeter)
-
+target_link_libraries(GreeterTests doctest::doctest Greeter::Greeter)
 set_target_properties(GreeterTests PROPERTIES CXX_STANDARD 17)
 
 # enable compiler warnings
 if(NOT TEST_INSTALLED_VERSION)
   if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-    target_compile_options(Greeter PUBLIC -Wall -pedantic -Wextra -Werror)
+    target_compile_options(Greeter PUBLIC -Wall -Wpedantic -Wextra -Werror)
   elseif(MSVC)
     target_compile_options(Greeter PUBLIC /W4 /WX)
     target_compile_definitions(GreeterTests PUBLIC DOCTEST_CONFIG_USE_STD_HEADERS)
@@ -57,8 +45,8 @@ endif()
 
 enable_testing()
 
-# Note: doctest and similar testing frameworks can automatically configure CMake tests For other
-# testing frameworks add the tests target instead: ADD_TEST(GreeterTests GreeterTests)
+# Note: doctest and similar testing frameworks can automatically configure CMake tests. For other
+# testing frameworks add the tests target instead: add_test(NAME greeterTests COMMAND GreeterTests)
 
 include(${doctest_SOURCE_DIR}/scripts/cmake/doctest.cmake)
 doctest_discover_tests(GreeterTests)
