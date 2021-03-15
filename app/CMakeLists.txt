@@ -52,14 +52,14 @@ target_link_libraries(App PUBLIC sub::Greeter CONAN_PKG::fmt CONAN_PKG::cxxopts)
 
 # the location where the project's version header will be placed should match the project's regular
 # header paths
-#string(TOLOWER ${PROJECT_NAME}/version.h VERSION_HEADER_LOCATION)
-#
-#packageProject(
-#        NAME ${PROJECT_NAME}
-#        VERSION ${PROJECT_VERSION}
-##        NAMESPACE ${PROJECT_NAME}
-#        BINARY_DIR ${PROJECT_BINARY_DIR}
-#        INCLUDE_DESTINATION include/${PROJECT_NAME}-${PROJECT_VERSION}
-#        VERSION_HEADER "${VERSION_HEADER_LOCATION}"
-#        COMPATIBILITY SameMajorVersion
-#)
+string(TOLOWER ${PROJECT_NAME}/version.h VERSION_HEADER_LOCATION)
+
+packageProject(
+        NAME ${PROJECT_NAME}
+        VERSION ${PROJECT_VERSION}
+#        NAMESPACE ${PROJECT_NAME}
+        BINARY_DIR ${PROJECT_BINARY_DIR}
+        INCLUDE_DESTINATION include/${PROJECT_NAME}-${PROJECT_VERSION}
+        VERSION_HEADER "${VERSION_HEADER_LOCATION}"
+        COMPATIBILITY SameMajorVersion
+)
