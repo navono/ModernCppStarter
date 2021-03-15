@@ -4,15 +4,10 @@ cmake_minimum_required(VERSION 3.14 FATAL_ERROR)
 
 # Note: update this to your new project's name and version
 project(
-        libGreeter
+        Greeter
         VERSION 0.2.1
         LANGUAGES CXX
 )
-
-set (lib_VERSION_MAJOR 0)
-set (lib_VERSION_MINOR 2)
-set (lib_VERSION_PATCH 1)
-set (lib_VERSION "${lib_VERSION_MAJOR}.${lib_VERSION_MINOR}.${lib_VERSION_PATCH}")
 
 # Call configure files on ver.h.in to set the version.
 # Uses the standard ${VARIABLE} syntax in the file
@@ -43,7 +38,7 @@ conan_basic_setup(TARGETS)
 # Note: for header-only libraries change all PUBLIC flags to INTERFACE and create an interface
 # target: add_library(Greeter INTERFACE)
 add_library(${PROJECT_NAME} ${headers} ${sources})
-add_library(sub::libGreeter ALIAS ${PROJECT_NAME})
+add_library(sub::Greeter ALIAS ${PROJECT_NAME})
 
 target_link_libraries(${PROJECT_NAME} PUBLIC CONAN_PKG::fmt)
 

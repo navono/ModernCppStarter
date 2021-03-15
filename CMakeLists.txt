@@ -11,6 +11,6 @@ include(./cmake/tools.cmake)
 enable_testing()
 
 add_subdirectory(app)
-add_subdirectory(libGreeter)
+add_subdirectory(Greeter)
 #add_subdirectory(test)
 #add_subdirectory(documentation)

@@ -45,7 +45,7 @@ target_include_directories(
 )
 
 # Link dependencies
-target_link_libraries(App PUBLIC sub::libGreeter CONAN_PKG::fmt CONAN_PKG::cxxopts)
+target_link_libraries(App PUBLIC sub::Greeter CONAN_PKG::fmt CONAN_PKG::cxxopts)
 
 # ---- Create an installable target ----
 # this allows users to install and find the library via `find_package()`.
