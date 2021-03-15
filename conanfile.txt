@@ -1,0 +1,7 @@
+[requires]
+fmt/7.0.3
+cxxopts/2.2.1
+doctest/2.4.4
+
+[generators]
+cmake

@@ -6,24 +6,23 @@ project(GreeterStandalone LANGUAGES CXX)
 
 include(../cmake/tools.cmake)
 
-# ---- Dependencies ----
-
-include(../cmake/CPM.cmake)
-
-CPMAddPackage(
-  GITHUB_REPOSITORY jarro2783/cxxopts
-  VERSION 2.2.0
-  OPTIONS "CXXOPTS_BUILD_TESTS NO"
-)
-
-CPMAddPackage(NAME Greeter SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/..)
-
-# ---- Create standalone executable ----
+# ---- Add source files ----
 
 file(GLOB sources CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/source/*.cpp)
+
+# ---- Conan ----
+
+include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+conan_basic_setup(TARGETS)
+
+# ---- Create standalone executable ----
 
 add_executable(GreeterStandalone ${sources})
 
 set_target_properties(GreeterStandalone PROPERTIES CXX_STANDARD 17 OUTPUT_NAME "Greeter")
 
-target_link_libraries(GreeterStandalone Greeter::Greeter cxxopts)
+target_link_libraries(GreeterStandalone Greeter::Greeter CONAN_PKG::cxxopts)
+
+target_include_directories(GreeterStandalone
+        PUBLIC ${PROJECT_SOURCE_DIR}/include
+        )
