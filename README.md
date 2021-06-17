@@ -52,7 +52,7 @@ During development it is usually convenient to [build all subprojects at once](#
 Use the following command to build and run the executable target.
 
 ```bash
-cmake -Hstandalone -Bbuild/standalone
+cmake -S standalone -B build/standalone
 cmake --build build/standalone
 ./build/standalone/Greeter --help
 ```
@@ -62,7 +62,7 @@ cmake --build build/standalone
 Use the following commands from the project's root directory to run the test suite.
 
 ```bash
-cmake -Htest -Bbuild/test
+cmake -S test -B build/test
 cmake --build build/test
 CTEST_OUTPUT_ON_FAILURE=1 cmake --build build/test --target test
 
@@ -78,7 +78,7 @@ Use the following commands from the project's root directory to check and fix C+
 This requires _clang-format_, _cmake-format_ and _pyyaml_ to be installed on the current system.
 
 ```bash
-cmake -Htest -Bbuild/test
+cmake -S test -B build/test
 
 # view changes
 cmake --build build/test --target format
@@ -95,7 +95,7 @@ The documentation is automatically built and [published](https://thelartians.git
 To manually build documentation, call the following command.
 
 ```bash
-cmake -Hdocumentation -Bbuild/doc
+cmake -S documentation -B build/doc
 cmake --build build/doc --target GenerateDocs
 # view the docs
 open build/doc/doxygen/html/index.html
@@ -109,7 +109,7 @@ The project also includes an `all` directory that allows building all targets at
 This is useful during development, as it exposes all subprojects to your IDE and avoids redundant builds of the library.
 
 ```bash
-cmake -Hall -Bbuild
+cmake -S all -B build
 cmake --build build
 
 # run tests
@@ -171,19 +171,17 @@ Instead, create a new directory or project with a CMakeLists that adds the libra
 Depending type it might make sense move these components into a separate repositories and reference a specific commit or version of the library.
 This has the advantage that individual libraries and components can be improved and updated independently.
 
-> You recommend to add external dependencies using CPM.cmake. Will this force users of my library to use CPM as well?
+> You recommend to add external dependencies using CPM.cmake. Will this force users of my library to use CPM.cmake as well?
 
 [CPM.cmake](https://github.com/TheLartians/CPM.cmake) should be invisible to library users as it's a self-contained CMake Script.
-If problems do arise, users can always opt-out by defining `CPM_USE_LOCAL_PACKAGES`, which will override all calls to `CPMAddPackage` with `find_package`.
-Alternatively, you could use `CPMFindPackage` instead of `CPMAddPackage`, which will try to use `find_package` before calling `CPMAddPackage` as a fallback.
-Both approaches should be compatible with common C++ package managers without modifications, however come with the cost of reproducible builds.
+If problems do arise, users can always opt-out by defining the CMake or env variable [`CPM_USE_LOCAL_PACKAGES`](https://github.com/cpm-cmake/CPM.cmake#options), which will override all calls to `CPMAddPackage` with the according `find_package` call.
+This should also enable users to use the project with their favorite external C++ dependency manager, such as vcpkg or Conan.
 
 > Can I configure and build my project offline?
 
-Using CPM, all missing dependencies are downloaded at configure time.
-To avoid redundant downloads, it's recommended to set a CPM cache directory, e.g.: `export CPM_SOURCE_CACHE=$HOME/.cache/CPM`.
-This will also allow offline configurations if all dependencies are present.
-No internet connection is required for building.
+No internet connection is required for building the project, however when using CPM missing dependencies are downloaded at configure time.
+To avoid redundant downloads, it's highly recommended to set a CPM.cmake cache directory, e.g.: `export CPM_SOURCE_CACHE=$HOME/.cache/CPM`.
+This will enable shallow clones and allow offline configurations dependencies are already available in the cache.
 
 > Can I use CPack to create a package installer for my project?
 
@@ -193,6 +191,9 @@ As there are a lot of possible options and configurations, this is not (yet) in 
 
 Perhaps the [MiniCppStarter](https://github.com/TheLartians/MiniCppStarter) is something for you!
 
-## Coming soon
+## Related projects and alternatives
 
-- Script to automatically adjust the template for new projects
+- [**ModernCppStarter & PVS-Studio Static Code Analyzer**](https://github.com/viva64/pvs-studio-cmake-examples/tree/master/modern-cpp-starter): Official instructions on how to use the ModernCppStarter with the PVS-Studio Static Code Analyzer.
+- [**lefticus/cpp_starter_project**](https://github.com/lefticus/cpp_starter_project/): A popular C++ starter project, created in 2017.
+- [**filipdutescu/modern-cpp-template**](https://github.com/filipdutescu/modern-cpp-template): A recent starter using a more traditional approach for CMake structure and dependency management.
+- [**vector-of-bool/pitchfork**](https://github.com/vector-of-bool/pitchfork/): Pitchfork is a Set of C++ Project Conventions.

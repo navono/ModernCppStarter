@@ -24,7 +24,7 @@ endif()
 include(cmake/CPM.cmake)
 
 # PackageProject.cmake will be used to make our target installable
-CPMAddPackage("gh:TheLartians/PackageProject.cmake@1.4.1")
+CPMAddPackage("gh:TheLartians/PackageProject.cmake@1.6.0")
 
 CPMAddPackage(
   NAME fmt
@@ -49,10 +49,10 @@ add_library(Greeter ${headers} ${sources})
 set_target_properties(Greeter PROPERTIES CXX_STANDARD 17)
 
 # being a cross-platform target, we enforce standards conformance on MSVC
-target_compile_options(Greeter PUBLIC "$<$<COMPILE_LANG_AND_ID:CXX,MSVC>:/permissive>")
+target_compile_options(Greeter PUBLIC "$<$<COMPILE_LANG_AND_ID:CXX,MSVC>:/permissive->")
 
 # Link dependencies
-target_link_libraries(Greeter PUBLIC fmt::fmt)
+target_link_libraries(Greeter PRIVATE fmt::fmt)
 
 target_include_directories(
   Greeter PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
